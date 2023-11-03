@@ -3,7 +3,7 @@ import { HomeOutlined, SearchOutlined, BarsOutlined, ArrowRightOutlined, PlusOut
 import { PiMusicNotesPlus } from "react-icons/pi";
 import { AiFillFolder } from "react-icons/ai";
 import { globalSelector } from '../../redux/selector';
-import { ContentPoperStyled, LogoStyled, SidebarStyled } from './styled';
+import { ContentPoperLoginStyled, ContentPoperStyled, LogoStyled, SidebarStyled } from './styled';
 import { Button, Popover, Tooltip } from 'antd';
 import { useState } from 'react';
 
@@ -12,11 +12,23 @@ const Sidebar = () => {
 
   const global = useSelector(globalSelector);
   const [openTooltip, setOpenTooltip] = useState(false);
-  const contentPoper = (
+
+  const contentPoperLogin = (
+    <ContentPoperLoginStyled>
+      <p>Tạo danh sách phát</p>
+      <p>Đăng nhập để tạo và chia sẻ playlist</p>
+      <div>
+        <button>Để sau</button>
+        <button>Đăng nhập</button>
+      </div>
+    </ContentPoperLoginStyled>
+  )
+
+  const contentPoperCreatePlaylist = (
     !global?.isLogin ?
       <>
         <ContentPoperStyled className='d-flex-align-items-center'>
-          <Popover>
+          <Popover content={contentPoperLogin} placement="right" trigger="click">
             <PiMusicNotesPlus className='fs-15 mr-4' />
             Tạo danh sách phát mới
           </Popover>
@@ -65,7 +77,7 @@ const Sidebar = () => {
                   <span>Thư viện</span>
                 </div>
 
-                <Popover color='rgb(46, 43, 43)' arrow={false} placement="bottomLeft" content={contentPoper} trigger="click">
+                <Popover color='rgb(46, 43, 43)' arrow={false} placement="bottomLeft" content={contentPoperCreatePlaylist} trigger="click">
                   <Tooltip arrow={false} open={openTooltip} color='rgb(46, 43, 43)' title={`Tạo danh sách phát hoặc thư mục`}>
                     <Button
                       className='icon-plus'

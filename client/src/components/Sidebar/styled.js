@@ -70,3 +70,6 @@ color: white;
   background-color: rgb(67, 63, 63);
 }
 `
+export const ContentPoperLoginStyled = styled.div`
+background-color: rgb(0, 119, 255);
+`
