@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 
 export const SidebarStyled = styled.div`
-min-width: 25%;
+min-width: 26%;
 .sidebar-top {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  background-color: rgb(20, 19, 19);
+  border-radius: 4px;
+  padding: 12px;
 }
+`
+export const ContentSidebarStyled = styled.div`
+width: 100%;
+overflow: hidden;
 .content-poper {
     cursor: pointer;
     color: white;
@@ -12,11 +19,16 @@ min-width: 25%;
       background-color: rgb(46, 43, 43);
     }
 }
+
 .sidebar-bottom {
+  background-color: rgb(20, 19, 19);
+  border-radius: 4px;
+  padding: 12px;
   .icon-plus {
     padding: 5px 7px;
     border-radius: 50%;
     background-color: transparent;
+    border-color: transparent;
     color: white;
     &:hover {
       background-color: rgb(30, 29, 29);
@@ -25,31 +37,32 @@ min-width: 25%;
     }
   }
 }
-.sidebar-top, .sidebar-bottom {
-  background-color: rgb(20, 19, 19);
-  border-radius: 4px;
-  padding: 12px;
+
+.sidebar-bottom-content {
+  overflow-y: auto; 
+  height: calc(100% - 210px );
+  &::-webkit-scrollbar {
+    margin-left: 30px;
+    width: 13px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #6a6a6a;
+  }
 }
-span {
-  font-weight: 600;
-}
+
 .sidebar-bottom-items {
   background-color: rgb(46, 43, 43);
   width: 100%;
   margin-top: 20px;
-  padding: 2px 0px 16px 2px;
+  padding: 12px 0px 16px 2px;
   border-radius: 8px;
 }
-button {
-  padding: 4px 16px;
-  cursor: pointer;
-  border-radius: 16px;
-  border-color: transparent;
-  transition: transform 0.3s ease;
-  transform-origin: center bottom;
-  &:hover {
-    transform: scale(1.05);
-  }
+
+.ant-tabs-nav {
+  display: none;
 }
 `
 
@@ -71,5 +84,16 @@ color: white;
 }
 `
 export const ContentPoperLoginStyled = styled.div`
-background-color: rgb(0, 119, 255);
+padding-right: 12px;
+.text {
+  color: white;
+}
+`
+export const LibraryItemStyled = styled.div`
+padding: 8px;
+border-radius: 8px;
+cursor: pointer;
+&:hover {
+  background-color: rgb(32, 30, 30);
+}
 `

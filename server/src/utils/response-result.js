@@ -1,3 +1,3 @@
-module.exports = function responseResult(data, isError, msg) {
+module.exports = function response(data, isError, msg) {
   return { data, isError, msg };
 }

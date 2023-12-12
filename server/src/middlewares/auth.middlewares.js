@@ -17,13 +17,13 @@ const authAdminMidleware = (req, res, next) => {
 
 const authUsernMidleware = (req, res, next) => {
   const token = req.headers.token.split(' ')[1];
-  const userid = req.params.id || req.body.id;
+  const userid = req.params.id || req.body.artist;
   jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decode) {
     if (err) {
       return res.status(404);
     }
     const { payload } = decode;
-    if (!payload.is_admin && payload._id == userid) {
+    if (!payload.is_admin && payload.id == userid) {
       next();
     } else {
       return res.status(404);

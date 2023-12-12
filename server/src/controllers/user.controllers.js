@@ -5,7 +5,7 @@ class UserController {
   // About account
 
   async register(req, res) {
-    const response = await UserService.fncRegister(req, res);
+    const response = await UserService.fncRegister(req);
     return res.json(response);
   }
 
@@ -16,6 +16,16 @@ class UserController {
 
   async getAllUser(req, res) {
     const response = await UserService.fncGetAllUser(req);
+    return res.json(response);
+  }
+
+  async getUserByEmail(req, res) {
+    const response = await UserService.fncGetUserByEmail(req);
+    return res.json(response);
+  }
+
+  async getProfileUser(req, res) {
+    const response = await UserService.fncGetProfileUser(req);
     return res.json(response);
   }
 
@@ -38,6 +48,13 @@ class UserController {
 
   async addOrDeleteLoveSong(req, res) {
     const response = await UserService.fncAddOrDeleteLoveSong(req);
+    return res.json(response);
+  }
+
+  // About album
+
+  async addOrDeleteAlbum(req, res) {
+    const response = await UserService.fncAddOrDeleteAlbum(req);
     return res.json(response);
   }
 

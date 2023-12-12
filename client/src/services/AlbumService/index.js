@@ -1,12 +1,23 @@
-import axios from 'axios';
-import { apiCreateAlbum, apiDeleteAlbum, apiGetOneAlbum, apiUpdateAlbum, apigetAllAlbumByUser } from './url';
+import http from '../index';
+import {
+  apiCreateAlbum,
+  apiDeleteAlbum,
+  apiGetOneAlbum,
+  apiUpdateAlbum,
+  apigetAllAlbumByUser
+} from './url';
 
-export const createAlbum = (body) => axios.post(apiCreateAlbum, body, {
+export const createAlbum = (body) => http.post(apiCreateAlbum, body, {
   headers: {
-    'Content-Type': 'multipart/form-data'
+    'Content-Type': 'multipart/form-data',
+    'token': `Bearer ${localStorage.getItem('token')}`
   }
 });
-export const getOneAlbum = (id) => axios.get(`${apiGetOneAlbum}/${id}`);
-export const getAllAlbumByUser = (id) => axios.get(`${apigetAllAlbumByUser}/${id}`);
-export const updateAlbum = (id, body) => axios.post(`${apiUpdateAlbum}/${id}`, body);
-export const deleteAlbum = (id) => axios.delete(`${apiDeleteAlbum}/${id}`);
+export const getOneAlbum = (id) => http.get(`${apiGetOneAlbum}/${id}`);
+export const getAllAlbumByUser = (id) => http.get(`${apigetAllAlbumByUser}/${id}`, {
+  headers: {
+    'token': `Bearer ${localStorage.getItem('token')}`
+  }
+});
+export const updateAlbum = (id, body) => http.post(`${apiUpdateAlbum}/${id}`, body);
+export const deleteAlbum = (id) => http.delete(`${apiDeleteAlbum}/${id}`);

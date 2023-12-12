@@ -4,9 +4,12 @@ const Schema = mongoose.Schema;
 const Album = new Schema({
   title: { type: String },
   artist: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  year: { type: String },
+  // time: { type: Date, default: Date.now() },
   avatarPath: { type: String, default: null },
   avatarPathId: { type: String, default: null },
+  status: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+  like: { type: Number, default: 0 },
 })
 
 
