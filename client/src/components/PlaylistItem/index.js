@@ -18,7 +18,7 @@ const PlaylistItem = ({ playlist }) => {
             right: '8px',
             bottom: '50%'
           }}
-          className='largeCircle greendBackgroundColor icon-play'
+          className='mediumCircle greendBackgroundColor icon-play'
           icon={<BsFillPlayFill className='fs-30' />}
         />
       </CardStyled>

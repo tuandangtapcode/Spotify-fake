@@ -29,9 +29,10 @@ export const getProfileUser = (id) => http.get(`${apiGetProfileUser}/${id}`, {
     'token': `Bearer ${localStorage.getItem('token')}`
   }
 });
-export const updateUser = (id, body) => http.put(`${apiUpdate}/${id}`, body, {
+export const updateProfile = (id, body) => http.put(`${apiUpdate}/${id}`, body, {
   headers: {
-    'token': `Bearer ${localStorage.getItem('token')}`
+    'token': `Bearer ${localStorage.getItem('token')}`,
+    'Content-Type': 'multipart/form-data'
   }
 });
 export const changePassword = (id, body) => http.post(`${apiChangePassword}/${id}`, body, {
@@ -69,7 +70,7 @@ export const deletePlaylist = (id, body) => http.post(`${apiDeletePlaylist}/${id
     'token': `Bearer ${localStorage.getItem('token')}`
   }
 });
-export const updateInforPlaylist = (id, body) => http.post(`${apiUpdateInforPlaylist}/${id}`, body, {
+export const updatePlaylist = (id, body) => http.post(`${apiUpdateInforPlaylist}/${id}`, body, {
   headers: {
     'token': `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'multipart/form-data'

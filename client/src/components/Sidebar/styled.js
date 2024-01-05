@@ -40,7 +40,7 @@ overflow: hidden;
 
 .sidebar-bottom-content {
   overflow-y: auto; 
-  height: calc(100% - 210px );
+  height: calc(100vh - 300px);
   &::-webkit-scrollbar {
     margin-left: 30px;
     width: 13px;

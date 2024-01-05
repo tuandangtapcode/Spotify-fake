@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useRoutes } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import { getProfileUser } from "./services/UserService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import globalSlice from "./redux/globalSlice";
 import { jwtDecode } from "jwt-decode";
 import SpinCustom from "./components/SpinCustom";
-import PlaylistDetail from "./pages/USER/PlaylistDetail";
 import NotFoundPage from "./pages/ErrorPage/NotFoundPage";
 import { getAllAlbumByUser } from "./services/AlbumService";
+import { globalSelector } from "./redux/selector";
 
 
 // ANONYMOUS
@@ -16,10 +16,14 @@ const AnonymousRoutes = React.lazy(() => import('./pages/ANONYMOUS/AnonymousRout
 const HomeAnonymous = React.lazy(() => import('./pages/ANONYMOUS/HomePage'));
 const LoginPage = React.lazy(() => import('./pages/ANONYMOUS/LoginPage'));
 const SignupPage = React.lazy(() => import('./pages/ANONYMOUS/SignupPage'));
+const AlbumDetail = React.lazy(() => import('./pages/ANONYMOUS/AlbumDetail'));
+const SongDetail = React.lazy(() => import('./pages/ANONYMOUS/SongDetail'));
 
 // USER
 const UserRoutes = React.lazy(() => import('./pages/USER/UserRoutes'));
 const HomeUser = React.lazy(() => import('./pages/USER/HomeUser'));
+const PlaylistDetail = React.lazy(() => import('./pages/USER/PlaylistDetail'));
+const ProfileUser = React.lazy(() => import('./pages/USER/ProfileUser'));
 
 // ADMIN
 const AdminRoutes = React.lazy(() => import('./pages/ADMIN/AdminRoutes'))
@@ -64,6 +68,14 @@ const routes = [
           </LazyLoadingComponent>
         )
       },
+      {
+        path: '/user/:id',
+        element: (
+          <LazyLoadingComponent>
+            <ProfileUser />
+          </LazyLoadingComponent>
+        )
+      },
     ]
   },
   // ADMIN
@@ -84,7 +96,7 @@ const routes = [
     ),
     children: [
       {
-        path: '/',
+        path: '/guest',
         element: (
           <LazyLoadingComponent>
             <HomeAnonymous />
@@ -115,6 +127,22 @@ const routes = [
           </LazyLoadingComponent>
         )
       },
+      {
+        path: '/album/:id',
+        element: (
+          <LazyLoadingComponent>
+            <AlbumDetail />
+          </LazyLoadingComponent>
+        )
+      },
+      {
+        path: '/track/:id',
+        element: (
+          <LazyLoadingComponent>
+            <SongDetail />
+          </LazyLoadingComponent>
+        )
+      },
     ]
   },
   {
@@ -131,15 +159,26 @@ function App() {
 
   const appRoutes = useRoutes(routes);
   const dispatch = useDispatch();
+  const global = useSelector(globalSelector);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       const user = jwtDecode(localStorage.getItem('token'));
       getProfile(user.payload.id);
-      getAlbumByUser(user.payload.id);
     }
   }, [])
+
+  useEffect(() => {
+    getAlbumByUser(global?.user?._id);
+  }, [global?.user])
+
+  useEffect(() => {
+    if (localStorage.getItem('currentSong')) {
+      const currentSong = JSON.parse(localStorage.getItem('currentSong'));
+      dispatch(globalSlice.actions.setCurrentSong(currentSong));
+    }
+  }, [localStorage.getItem('currentSong')])
 
   const getProfile = async (id) => {
     try {

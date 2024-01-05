@@ -1,8 +1,7 @@
 import LibraryItem from "./component/LibraryItem";
 import ButtonCustom from "../../../ButtonCustom/MyButton";
 
-const MyLibrary = ({ global, handleCreatePlaylist, loading }) => {
-
+const MyLibrary = ({ handleCreatePlaylist }) => {
 
   return (
     <div>
@@ -17,7 +16,7 @@ const MyLibrary = ({ global, handleCreatePlaylist, loading }) => {
               ...global?.user?.playlists,
               ...global?.user?.albums
             ].sort((a, b) => {
-              return new Date(a?.addedAt) - new Date(b?.addedAt)
+              return new Date(b?.addedAt) - new Date(a?.addedAt)
             }).map(i =>
               <LibraryItem libraryItem={i} />
             )
@@ -29,7 +28,6 @@ const MyLibrary = ({ global, handleCreatePlaylist, loading }) => {
               <p className='ml-12 mb-20 fs-15 text'>Rất dễ! Chúng tôi sẽ giúp bạn</p>
               <ButtonCustom
                 className='ml-12 fs-15 fw-700 normal medium'
-                loading={loading}
                 onClick={() => handleCreatePlaylist()}
               >
                 Tạo danh sách phát

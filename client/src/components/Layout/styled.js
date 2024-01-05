@@ -16,6 +16,9 @@ display: flex;
 `
 
 export const ContentStyled = styled.div`
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  height: calc(100vh - 90px);
   margin-left: 8px;
   width: 100%;
   border-radius: 4px;

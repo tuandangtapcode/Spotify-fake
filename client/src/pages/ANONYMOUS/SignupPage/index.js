@@ -1,8 +1,7 @@
-import { useForm } from "antd/es/form/Form";
 import { LogoStyled } from "../LoginPage/styled";
 import { HeaderSignupStyled, SignupFormStyled, SignupStyled } from './styled'
 import { Form, Steps } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FormEmail from "./components/FormEmail";
 import FormPassword from "./components/FormPassword";
@@ -14,7 +13,7 @@ import { register } from "../../../services/UserService";
 
 const SignupPage = () => {
 
-  const [form] = useForm();
+  const [form] = Form.useForm();
   const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -84,6 +83,10 @@ const SignupPage = () => {
   const items = steps.map((item) => ({
     key: item.title,
   }));
+
+  useEffect(() => {
+    if (!!localStorage.getItem('item')) navigate('/')
+  }, [])
 
   return (
     <SignupStyled className="backgroundGray">

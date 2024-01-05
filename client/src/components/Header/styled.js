@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Dropdown, Input } from "antd";
 import styled from "styled-components";
 
 export const HeaderStyled = styled.div`
@@ -30,5 +30,4 @@ border-radius: 30px;
 .ant-input:focus {
   caret-color: white;
 }
-
 `

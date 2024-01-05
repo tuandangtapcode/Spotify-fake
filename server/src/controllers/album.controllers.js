@@ -17,12 +17,12 @@ class AlbumController {
     return res.json(response);
   }
 
-  async updateAlbum(req) {
+  async updateAlbum(req, res) {
     const response = await AlbumService.fncUpdateAlbum(req);
     return res.json(response);
   }
 
-  async deleteAlbum(req) {
+  async deleteAlbum(req, res) {
     const response = await AlbumService.fncDeleteAlbum(req);
     return res.json(response);
   }

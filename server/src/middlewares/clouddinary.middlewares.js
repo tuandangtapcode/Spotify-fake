@@ -5,15 +5,16 @@ const multer = require('multer');
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_NAME,
 	api_key: process.env.CLOUDINARY_KEY,
-	api_secret: process.env.CLOUDINARY_SECRET
+	api_secret: process.env.CLOUDINARY_SECRET,
 });
 
 const configStorage = (folder) => {
 	const storage = new CloudinaryStorage({
 		cloudinary,
-		allowedFormats: ['jpg', 'png', 'mp3'],
 		params: {
-			folder: `spotify_fake/${folder}`
+			folder: `spotify_fake/${folder}`,
+			resource_type: 'auto', // để cloudinary nhận vào cái file audio/*
+			allowedFormats: ['mp3', 'jpg', 'png', 'jpeg', 'gif', 'mpeg'],
 		},
 	});
 

@@ -1,17 +1,16 @@
 import { Col, Form, Row, Upload, message } from "antd";
-import ButtonCustom from "../../../../components/ButtonCustom/MyButton";
 import ModalCustom from "../../../../components/ModalCustom";
 import { useEffect, useState } from "react";
 import InputCustom from "../../../../components/InputCustom";
-import { updateInforPlaylist } from "../../../../services/UserService";
+import { updatePlaylist } from "../../../../services/UserService";
 import { toast } from "react-toastify";
 import globalSlice from "../../../../redux/globalSlice";
 import { useDispatch } from 'react-redux';
-import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 
 const ModalUpdatePlaylist = ({ open, onCancel, onOk }) => {
-  const [form] = useForm();
+
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState();
@@ -21,7 +20,8 @@ const ModalUpdatePlaylist = ({ open, onCancel, onOk }) => {
     try {
       setLoading(true);
       const values = await form.validateFields();
-      const res = await updateInforPlaylist(open?.id, { ...values, avatar: avatar, playlistId: open?.playlistId });
+      const { image, ...remainValues } = values;
+      const res = await updatePlaylist(open?.id, { ...remainValues, avatar, playlistId: open?.playlistId });
       if (res?.isError) return toast.error(res?.msg);
       dispatch(globalSlice.actions.setUser(res?.data));
       await onOk();

@@ -1,14 +1,21 @@
-import { useForm } from "antd/es/form/Form";
+import { Col, Form, Row, Upload, message } from "antd";
 import ModalCustom from "../../../../components/ModalCustom";
 import { useEffect, useState } from "react";
-import { Col, Form, Row, Upload, message } from "antd";
 import InputCustom from "../../../../components/InputCustom";
+import { useDispatch, useSelector } from "react-redux";
+import { globalSelector } from "../../../../redux/selector";
+import { updateProfile } from "../../../../services/UserService";
+import { toast } from "react-toastify";
+import globalSlice from "../../../../redux/globalSlice";
 
-const ModalInsertUpdateAlbum = ({ open, onCancel, onOk }) => {
+const ModalUpdateProfile = ({ open, onCancel }) => {
 
-  const [form] = useForm();
+  const [form] = Form.useForm();
+  const global = useSelector(globalSelector);
+  const dispatch = useDispatch();
   const [avatar, setAvatar] = useState();
   const [preview, setPreview] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleChangeFile = (file) => {
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
@@ -21,17 +28,32 @@ const ModalInsertUpdateAlbum = ({ open, onCancel, onOk }) => {
     }
   }
 
-  useEffect(() => {
-    if (!!open?._id) {
-      form.setFieldsValue(open);
+  const handleUpdateProfile = async () => {
+    try {
+      setLoading(true);
+      const values = await form.validateFields();
+      const { image, ...remainValues } = values;
+      const res = await updateProfile(global?.user?._id, { ...remainValues, avatar });
+      if (res?.isError) return toast.error(res?.msg);
+      toast.success(res?.msg);
+      dispatch(globalSlice.actions.setUser(res?.data));
+      onCancel();
+    } finally {
+      setLoading(false);
     }
-  }, [open])
+  }
+
+  useEffect(() => {
+    form.setFieldsValue(global?.user);
+  }, [])
 
   return (
     <ModalCustom
+      title="Chi tiết hồ sơ"
       open={open}
       onCancel={onCancel}
-      onOk={onOk}
+      handleSubmit={handleUpdateProfile}
+      loading={loading}
     >
       <Form form={form}>
         <Row gutter={[16, 0]}>
@@ -41,7 +63,7 @@ const ModalInsertUpdateAlbum = ({ open, onCancel, onOk }) => {
               name='image'
               rules={[
                 {
-                  required: !!open?.avatarPath ? false : true, message: 'Thông tin không được để trống'
+                  required: !!global?.user?.avatarPath ? false : true, message: 'Thông tin không được để trống'
                 }
               ]}
             >
@@ -52,13 +74,13 @@ const ModalInsertUpdateAlbum = ({ open, onCancel, onOk }) => {
                 maxCount={1}
                 fileList={[]}
               >
-                <img style={{ width: '100%', height: '180px' }} src={!!preview ? preview : open?.avatarPath} alt="" />
+                <img style={{ width: '100%', height: '180px' }} src={!!preview ? preview : global?.user?.avatarPath} alt="" />
               </Upload>
             </Form.Item>
           </Col>
           <Col span={14}>
             <Form.Item
-              name='title'
+              name='fullname'
               className="mb-16"
               rules={[
                 {
@@ -75,4 +97,4 @@ const ModalInsertUpdateAlbum = ({ open, onCancel, onOk }) => {
   );
 }
 
-export default ModalInsertUpdateAlbum;
+export default ModalUpdateProfile;

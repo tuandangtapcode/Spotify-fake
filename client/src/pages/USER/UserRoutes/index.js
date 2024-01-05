@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { globalSelector } from "../../../redux/selector";
-import { Outlet } from "react-router-dom";
-import ForbiddenPage from "../../ErrorPage/ForbiddenPage";
+import { Navigate, Outlet } from "react-router-dom";
 import Layout from "../../../components/Layout";
 
 
@@ -16,7 +15,7 @@ const UserRoutes = () => {
             <Outlet />
           </Layout>
           :
-          <ForbiddenPage />
+          <Navigate to={'/guest'} />
       }
     </>
   );

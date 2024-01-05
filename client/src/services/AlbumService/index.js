@@ -19,5 +19,10 @@ export const getAllAlbumByUser = (id) => http.get(`${apigetAllAlbumByUser}/${id}
     'token': `Bearer ${localStorage.getItem('token')}`
   }
 });
-export const updateAlbum = (id, body) => http.post(`${apiUpdateAlbum}/${id}`, body);
+export const updateAlbum = (id, body) => http.post(`${apiUpdateAlbum}/${id}`, body, {
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    'token': `Bearer ${localStorage.getItem('token')}`
+  }
+});
 export const deleteAlbum = (id) => http.delete(`${apiDeleteAlbum}/${id}`);

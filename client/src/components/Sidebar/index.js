@@ -13,8 +13,7 @@ import { toast } from 'react-toastify';
 import MyAlbum from './components/MyAlbum';
 import MyLibrary from './components/MyLibrary';
 import globalSlice from '../../redux/globalSlice';
-import { createAlbum } from '../../services/AlbumService';
-import ModalInsertUpdateAlbum from '../../pages/USER/AlbumDetail/components/ModalInsertUpdateAlbum';
+import ModalInsertUpdateAlbum from '../../pages/ANONYMOUS/AlbumDetail/components/ModalInsertUpdateAlbum';
 
 const Sidebar = () => {
 
@@ -41,39 +40,20 @@ const Sidebar = () => {
     }
   }
 
-  const handleCreateAlbum = async (values) => {
-    try {
-      setLoading(true);
-      const res = await createAlbum(values);
-      if (res?.isError) return toast.error(res?.msg);
-      setOpenPoperCreatePlaylist(false);
-      navigate(`/album/${res?.data?._id}`);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   const items = [
     {
       key: 1,
       label: 'Thư viện',
       children: (
-        <MyLibrary
-          global={global}
-          handleCreatePlaylist={handleCreatePlaylist}
-          loading={loading}
-        />
+        <MyLibrary handleCreatePlaylist={handleCreatePlaylist} />
       ),
     },
     {
       key: 2,
       label: 'Album của tôi',
       children: (
-        <MyAlbum
-          global={global}
-          handleCreateAlbum={handleCreateAlbum}
-          loading={loading}
-        />
+        <MyAlbum />
       ),
     },
   ]
@@ -96,17 +76,15 @@ const Sidebar = () => {
 
   const contentPoperCreatePlaylist = (
     !localStorage.getItem('token') ?
-      <>
-        <ContentPoperStyled className='align-items-center'
-          onClick={() => {
-            setOpenPoperCreatePlaylist(false);
-            setOpenPoperLogin(true);
-          }}
-        >
-          <PiMusicNotesPlus className='fs-15 mr-4' />
-          Tạo danh sách phát mới
-        </ContentPoperStyled>
-      </>
+      <ContentPoperStyled className='align-items-center'
+        onClick={() => {
+          setOpenPoperCreatePlaylist(false);
+          setOpenPoperLogin(true);
+        }}
+      >
+        <PiMusicNotesPlus className='fs-15 mr-4' />
+        Tạo danh sách phát mới
+      </ContentPoperStyled>
       :
       <>
         <ContentPoperStyled
@@ -118,11 +96,14 @@ const Sidebar = () => {
           />
           Tạo danh sách phát mới
         </ContentPoperStyled>
-        <ContentPoperStyled className='align-items-center'>
-          <AiFillFolder
-            className='fs-15 mr-4'
-            onClick={() => setOpenModalCreateAlbum(true)}
-          />
+        <ContentPoperStyled
+          className='align-items-center'
+          onClick={() => {
+            setOpenModalCreateAlbum(true);
+            setOpenPoperCreatePlaylist(false);
+          }}
+        >
+          <AiFillFolder className='fs-15 mr-4' />
           Tạo album nhạc
         </ContentPoperStyled>
       </>

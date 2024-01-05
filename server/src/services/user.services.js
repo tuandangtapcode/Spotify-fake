@@ -80,11 +80,16 @@ class UserService {
   async fncUpdateUser(req) {
     const id = req.params.id;
     try {
-      const getUser = await User.findOne({ _id: id });
-      const update = await User.updateOne({ _id: id }, req.body);
-      return response(update, false, 'Cập nhật thành công');
+      const userBeforeUpdate = await User.findOne({ _id: id });
+      await User.updateOne({ _id: id }, {
+        ...req.body,
+        avatarPath: !!req.file ? req.file.path : userBeforeUpdate?.avatarPath,
+        avatarPathId: !!req.file ? req.file.filename : userBeforeUpdate?.avatarPathId,
+      });
+      const userAfterUpdate = await User.findOne({ _id: id });
+      return response(userAfterUpdate, false, 'Cập nhật hồ sơ thành công');
     } catch (error) {
-      return response({}, true, 'Người dùng không tồn tại');
+      return response({}, true, error.toString());
     }
   }
 
@@ -92,12 +97,13 @@ class UserService {
     const id = req.params.id;
     const { oldpassword, newpassword } = req.body;
     try {
-      const getUser = await User.findOne({ _id: id });
-      const check = bcrypt.compareSync(oldpassword, getCustomer.password);
-      if (!check) return response({}, true, 'Mật khẩu không chính xác');;
+      const user = await User.findOne({ _id: id });
+      const check = bcrypt.compareSync(oldpassword, user.password);
+      if (!check) return response({}, true, 'Mật khẩu không chính xác');
       const hashPassword = bcrypt.hashSync(newpassword, saltRounds);
-      const update = await User.updateOne({ _id: id }, { password: hashPassword });
-      return response(update, false, 'Cập nhật thành công');
+      await User.updateOne({ _id: id }, { password: hashPassword });
+      const userAfterUpdate = await User.findOne({ _id: id });
+      return response(userAfterUpdate, false, 'Cập nhật mật khẩu thành công');
     } catch (error) {
       return response({}, true, 'Người dùng không tồn tại');
     }
@@ -147,7 +153,6 @@ class UserService {
     const id = req.params.id;
     const songId = req.body.songId;
     try {
-      const user = await User.findOne({ _id: id });
       const lovesong = awaitUser.findOne({ 'love_songs.songId': songId });
       if (lovesong) {
         await User.updateOne({ _id: id }, { $pull: { love_songs: songId } });
@@ -161,7 +166,7 @@ class UserService {
         return response(userAfterUpdate, false, 'Like bài hát');
       }
     } catch (error) {
-      return response({}, true, 'Người dùng không tồn tại');
+      return response({}, true, error.toString());
     }
   }
 
@@ -171,16 +176,13 @@ class UserService {
     const id = req.params.id;
     const albumId = req.body.albumId;
     try {
-      const user = await User.findOne({ _id: id });
       const album = await User.findOne({ 'albums.albumId': albumId });
       if (album) {
-        console.log('album trong if', album);
         await User.updateOne({ _id: id }, { $pull: { albums: albumId } });
         await Album.updateOne({ _id: albumId }, { $inc: { like: -1 } });
         const userAfterUpdate = await User.findOne({ _id: id });
         return response(userAfterUpdate, false, 'Bỏ like album');
       } else {
-        console.log('album trong else', album);
         await User.updateOne({ _id: id }, { $push: { albums: albumId } });
         await Album.updateOne({ _id: albumId }, { $inc: { like: 1 } });
         const userAfterUpdate = await User.findOne({ _id: id });
@@ -224,8 +226,9 @@ class UserService {
     const id = req.params.id;
     const playlistId = req.body.playlistId;
     try {
-      const update = await User.updateOne({ _id: id }, { $pull: { playlists: { _id: playlistId } } });
-      return response(update, false, 'Xóa playlist thành công');
+      await User.updateOne({ _id: id }, { $pull: { playlists: { _id: playlistId } } });
+      const userAfterUpdate = await User.findOne({ _id: id });
+      return response(userAfterUpdate, false, 'Xóa playlist thành công');
     } catch (error) {
       return response({}, true, 'Playlist không tồn tại');
     }
@@ -254,6 +257,7 @@ class UserService {
       const userAfterUpdate = await User.findOne({ _id: id });
       return response(userAfterUpdate, false, 'Cập nhật playlist thành công');
     } catch (error) {
+      cloudinary.uploader.destroy(req.file.filename);
       return response({}, true, error.toString());
     }
   }

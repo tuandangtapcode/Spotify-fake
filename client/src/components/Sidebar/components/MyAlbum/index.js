@@ -1,9 +1,11 @@
-import { } from "react-redux";
+import { useSelector } from "react-redux";
 import AlbumItem from "./component.js/AlbumItem";
 import { FileExcelOutlined } from '@ant-design/icons';
+import { globalSelector } from "../../../../redux/selector";
 
-const MyAlbum = ({ global, handleCreateAlbum, loading }) => {
+const MyAlbum = () => {
 
+  const global = useSelector(globalSelector)
 
   return (
     <div>

@@ -6,6 +6,14 @@
   }
 }
 
+.grayBackgroundColor {
+  background-color: #6a6a6a !important;
+
+  &:hover {
+    color: black !important;
+  }
+}
+
 .noBackgroundColor {
   background-color: transparent;
   color: rgb(205, 192, 192) !important;
@@ -34,18 +42,25 @@
 }
 
 .smallCircle {
-  padding-left: 3px !important;
+  padding-left: 4px !important;
   padding-right: 28px !important;
-  padding-bottom: 28px !important;
+  padding-bottom: 30px !important;
   height: 20px !important;
   width: 20px !important;
+}
+
+.mediumCircle {
+  padding-top: 6px !important;
+  padding-left: 4px !important;
+  height: 45px;
+  width: 45px !important;
 }
 
 .largeCircle {
   padding-top: 6px !important;
   padding-left: 4px !important;
-  height: 45px;
-  width: 45px !important;
+  height: 60px;
+  width: 60px !important;
 }
 
 .small {

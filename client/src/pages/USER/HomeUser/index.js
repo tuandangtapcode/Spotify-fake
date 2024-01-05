@@ -61,7 +61,7 @@ const HomeUser = () => {
         <Row gutter={[16, 16]}>
           {
             playlists?.map(playlist =>
-              <Col span={3}>
+              <Col span={4}>
                 <PlaylistItem playlist={playlist} />
               </Col>
             )

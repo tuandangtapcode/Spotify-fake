@@ -1,4 +1,3 @@
-import { useForm } from "antd/es/form/Form";
 import { HeaderLoginStyled, LoginFormStyled, LoginStyled, LogoStyled, OptionLoginStyled } from "./styled";
 import { Form } from "antd";
 import { getRegexEmail } from "../../../lib/stringUtils";
@@ -9,12 +8,12 @@ import { toast } from 'react-toastify';
 import { useDispatch } from "react-redux";
 import globalSlice from "../../../redux/globalSlice";
 import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputCustom from "../../../components/InputCustom";
 
 const LoginPage = () => {
 
-  const [form] = useForm();
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -25,8 +24,8 @@ const LoginPage = () => {
       const values = await form.validateFields();
       const res = await login(values);
       if (res?.isError) return toast.error(res?.msg);
-      const user = await jwtDecode(res?.data);
-      await localStorage.setItem('token', res?.data);
+      const user = jwtDecode(res?.data);
+      localStorage.setItem('token', res?.data);
       getProfile(user?.payload?.id);
       if (!user?.payload?.is_admin) {
         navigate('/')
@@ -40,8 +39,12 @@ const LoginPage = () => {
 
   const getProfile = async (id) => {
     const res = await getProfileUser(id);
-    await dispatch(globalSlice.actions.setUser(res?.data));
+    dispatch(globalSlice.actions.setUser(res?.data));
   }
+
+  useEffect(() => {
+    if (!!localStorage.getItem('token')) navigate('/')
+  }, [])
 
   return (
     <LoginStyled className="">

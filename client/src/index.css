@@ -16,6 +16,29 @@ body {
   margin-bottom: 0;
 }
 
+.ant-upload,
+.ant-upload-select {
+  width: 100%;
+}
+
+.ant-dropdown-menu {
+  padding: 8px !important;
+  background-color: rgb(56, 55, 55) !important;
+  color: white !important;
+}
+
+.ant-dropdown-menu-item {
+  padding: 8px !important;
+}
+
+.ant-dropdown-menu-item:hover {
+  background-color: #6a6a6a !important;
+}
+
+.ant-dropdown-menu-title-content {
+  color: white;
+}
+
 .noBackground {
   background-color: transparent;
 }
